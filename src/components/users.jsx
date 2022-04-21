@@ -13,7 +13,7 @@ class Users extends React.Component {
        const response = await axios.get('https://reqres.in/api/users')
        setTimeout(()=>{
         this.setState({users:response.data.data , isLoading:false})
-       },3000)
+       },1000)
    }
 
     render() { 
@@ -33,10 +33,10 @@ class Users extends React.Component {
                                 <h5>{user.email}</h5>
                                 <div className="row">
                                     <div className="col-6">
-                                        <button onClick={this.handleUpdate} className="btn btn-info btn-sm">Update</button>
+                                        <button onClick={()=>{this.handleUpdate(user)}} className="btn btn-info btn-sm">Update</button>
                                     </div>
                                     <div className="col-6">
-                                        <button onClick={this.handleDelete} className="btn btn-danger btn-sm">Delete</button>
+                                        <button onClick={()=>{this.handleDelete(user)}} className="btn btn-danger btn-sm">Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -49,17 +49,37 @@ class Users extends React.Component {
         </>;
     }
 
-    handleCreate = ()=>{
+    handleCreate = async()=>{
 
+        const newUser ={
+            first_name:'AmiReza',
+            last_name:'Asadi',
+            email: 'mr.ara1999@gmail.com',
+            avatar: 'https://i.postimg.cc/7LFKPHQd/post4.jpg',
+        }
+
+        const Response = await axios.post('https://reqres.in/api/users',newUser)
+        this.setState({users:[...this.state.users,newUser]})
     }
 
-    handleDelete = (user)=>{
 
+    handleUpdate = async(user)=>{
+       user.first_name = "Ahmad"
+       const response = await axios.put(`https://reqres.in/api/users/${user.id}`,user)
+       const updatedUser = [... this.state.users];
+       const index = updatedUser.indexOf(user);
+       
+       updatedUser[index] = {... user}
+       this.setState({users: updatedUser})
     }
 
-    handleUpdate = (user)=>{
-
+    handleDelete = async(user)=>{
+        const response = await axios.delete(`https://reqres.in/api/users/${user.id}`);
+        const newUser = this.state.users.filter(u => u.id !== user.id);
+        
+        this.setState({users : newUser});
     }
+
 }
  
 export default Users;
