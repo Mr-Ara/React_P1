@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { Component, createRef } from 'react';
 import  Input  from '../components/input';
 import * as yup from'yup';
+import {} from 'react-router-dom'
 
 class Login extends React.Component {
 
@@ -35,12 +36,15 @@ validate = async()=>{
         const result = await this.validate()
       
         if(result){
+            console.log(result)
             try {
                 
             this.setState({sending:true})
             const response = await axios.post('https://reqres.in/api/login',result)
+            localStorage.setItem('token',response.data.token)
+            window.location ='/dashboard'
             this.setState({sending:false})
-            console.log(result)
+            
              } catch (error) {
                 this.setState({errors:['email or passwors is wrong!']})
                 this.setState({sending:false})

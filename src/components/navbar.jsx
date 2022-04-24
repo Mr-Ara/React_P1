@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 
-const NavBar = () => {
+const NavBar = (props ) => {
     return <>
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
   <div className="container-fluid">
@@ -14,12 +14,28 @@ const NavBar = () => {
         <li className="nav-item">
           <a className="nav-link active" aria-current="page" href="/users">Users</a>
         </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/login">Login</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/register">Register</a>
-        </li>
+        {
+           !props.user?(
+               <>
+            <li className="nav-item">
+            <a className="nav-link" href="/login">Login</a>
+            </li>
+            <li className="nav-item">
+            <a className="nav-link" href="/register">Register</a>
+            </li>
+               </>
+           ):(
+               <>
+                 <li className="nav-item">
+                 <a className="nav-link" href="/dashboard">Dashboard</a>
+                 </li>
+                 <li className="nav-item">
+                 <a className="nav-link" href="/logout">Logout</a>
+                 </li>
+               </>
+           )
+           
+        }
         
       </ul>
     </div>
